@@ -1,15 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Swipe : MonoBehaviour
 {
-    private Vector2 _startTouchPosition; 
+    private Vector2 _startTouchPosition;
     private Vector2 _endTouchPosition;
 
 
 
-    
+
     void Update()
     {
         Swiping();
@@ -17,18 +18,33 @@ public class Swipe : MonoBehaviour
 
     private void Swiping()
     {
-        if(Input.touchCount > 0)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            Touch touch = Input.GetTouch(0);
+            _startTouchPosition = Input.GetTouch(0).position;
+        }
 
-            if(touch.deltaPosition.x > 0)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        {
+            _endTouchPosition = Input.GetTouch(0).position;
+
+            if (_endTouchPosition.x < _startTouchPosition.x)
             {
-                Debug.Log("Right");
+                NextPage();
             }
-            if(touch.deltaPosition.x < 0)
+            if (_endTouchPosition.x > _startTouchPosition.x)
             {
-                Debug.Log("Left");
+                PrivousPage();
             }
         }
+    }
+
+    private void PrivousPage()
+    {
+        Debug.Log("Left page");
+    }
+
+    private void NextPage()
+    {
+        Debug.Log("Right page");
     }
 }
